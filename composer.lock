@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48d6188c5f9e1810c731cef9c8e9f33e",
+    "content-hash": "03a8adfb1baa1ad839fe4bfcb87d0dbf",
     "packages": [
         {
             "name": "archtechx/enums",
@@ -6030,6 +6030,62 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.4.0"
             },
             "time": "2025-12-02T11:56:42+00:00"
+        },
+        {
+            "name": "torann/laravel-repository",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Torann/laravel-repository.git",
+                "reference": "c5b80162d34eed4db28f8578c521a9cda7e75692"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Torann/laravel-repository/zipball/c5b80162d34eed4db28f8578c521a9cda7e75692",
+                "reference": "c5b80162d34eed4db28f8578c521a9cda7e75692",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/database": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^9.0",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Torann\\LaravelRepository\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Stainback",
+                    "email": "torann@gmail.com"
+                }
+            ],
+            "description": "Base repository implementation for Laravel",
+            "keywords": [
+                "eloquent",
+                "laravel",
+                "repositories",
+                "repository",
+                "repository pattern"
+            ],
+            "support": {
+                "issues": "https://github.com/Torann/laravel-repository/issues",
+                "source": "https://github.com/Torann/laravel-repository/tree/1.1.1"
+            },
+            "time": "2026-01-20T18:46:37+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

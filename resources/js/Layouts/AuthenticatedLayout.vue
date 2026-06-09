@@ -1,17 +1,40 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import Alert from '@/Components/Alert.vue';
+import { useAlert } from '@/Composables/useAlert';
+
+const { alert, triggerAlert } = useAlert();
+
+const page = usePage();
+
+watch(
+    () => [page.props.flash, page.props.errors],
+    ([flash, errors]) => {
+        if (flash?.success) triggerAlert(flash.success, 'success');
+        if (flash?.error) triggerAlert(flash.error, 'error');
+        if (errors?.error) triggerAlert(errors.error, 'error');
+    },
+    { deep: true, immediate: true }
+);
 
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
     <div>
+        <Alert 
+            :show="alert.show" 
+            :message="alert.message" 
+            :type="alert.type" 
+            @close="alert.show = false" 
+        />
+
         <div class="min-h-screen bg-gray-100">
             <nav
                 class="border-b border-gray-100 bg-white"

@@ -34,13 +34,7 @@ class RecipeService implements BaseServiceInterface
             $recipe->fill($recipeData);
             $recipe->save();
 
-            if ($existingModel) {
-                $recipe->recipeSteps()->delete();
-            }
-
-            foreach ($stepsData as $stepData) {
-                $recipe->recipeSteps()->create($stepData);
-            }
+            $this->recreateSteps($stepsData, $recipe);
 
             DB::commit();
             return $recipe;
@@ -62,6 +56,17 @@ class RecipeService implements BaseServiceInterface
         } catch (Exception $e) {
             DB::rollBack();
             return $e;
+        }
+    }
+
+    private function recreateSteps(array $stepsData, ?Recipe $recipe = null): void
+    {
+        if (!empty($recipe)) {
+            $recipe->recipeSteps()->delete();
+        }
+
+        foreach ($stepsData as $step) {
+            $recipe->recipeSteps()->create($step);
         }
     }
 }

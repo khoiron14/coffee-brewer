@@ -25,7 +25,9 @@ class RecipeController extends Controller
 
     public function index(Request $request): Response
     {
-        $filters = $request->only(['name', 'per_page']);
+        $filters = $request->merge([
+            'user_id' => Auth::id(),
+        ])->all();
         $recipes = $this->recipeService->getList($filters);
 
         return Inertia::render('Recipe/Index', [

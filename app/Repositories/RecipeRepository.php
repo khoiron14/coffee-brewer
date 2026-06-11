@@ -25,9 +25,11 @@ class RecipeRepository extends BaseRepository
     {
         $request['per_page'] = $request['per_page'] ?? 10;
         $request['name'] = $request['name'] ?? null;
+        $request['user_id'] = $request['user_id'] ?? null;
 
         $query = $this->getModel()
             ->query()
+            ->when(!is_null($request['user_id']), fn($q) => $q->where('user_id', $request['user_id']))
             ->when(!is_null($request['name']), fn($q) => $q->where('name', 'ILIKE', '%' . $request['name'] . '%'))
             ->latest();
 

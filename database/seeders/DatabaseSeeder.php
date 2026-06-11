@@ -21,5 +21,9 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 BrewerSeeder::class
             ]);
+
+            $this->call([
+                CoffeeSeeder::class
+            ]);
     }
 }

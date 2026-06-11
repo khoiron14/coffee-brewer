@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     // recipe routes
     Route::resource('recipes', \App\Http\Controllers\RecipeController::class);
+    Route::resource('coffees', \App\Http\Controllers\CoffeeController::class);
 });
 
 require __DIR__.'/auth.php';

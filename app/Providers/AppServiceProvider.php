@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CoffeeController;
+use App\Http\Controllers\RatingController;
 use App\Interfaces\BaseServiceInterface;
 use App\Services\RecipeService;
 use App\Services\CoffeeService;
+use App\Services\RatingService;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(CoffeeController::class)
             ->needs(BaseServiceInterface::class)
             ->give(CoffeeService::class);
+
+        $this->app->when(RatingController::class)
+            ->needs(BaseServiceInterface::class)
+            ->give(RatingService::class);
 
     }
 

@@ -26,11 +26,14 @@ class RecipeRepository extends BaseRepository
         $request['per_page'] = $request['per_page'] ?? 10;
         $request['name'] = $request['name'] ?? null;
         $request['user_id'] = $request['user_id'] ?? null;
+        $request['is_published'] = $request['is_published'] ?? null;
 
         $query = $this->getModel()
             ->query()
+            ->with(['brewer:id,name', 'coffee:id,name', 'user:id,name'])
             ->when(!is_null($request['user_id']), fn($q) => $q->where('user_id', $request['user_id']))
             ->when(!is_null($request['name']), fn($q) => $q->where('name', 'ILIKE', '%' . $request['name'] . '%'))
+            ->when(!is_null($request['is_published']), fn($q) => $q->where('is_published', $request['is_published']))
             ->latest();
 
         return $paginated

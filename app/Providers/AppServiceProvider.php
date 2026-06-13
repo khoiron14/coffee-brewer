@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CoffeeController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\DashboardController;
 use App\Interfaces\BaseServiceInterface;
 use App\Services\RecipeService;
 use App\Services\CoffeeService;
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         // Register singleton services
         $this->app->singleton(RecipeService::class, RecipeService::class);
         $this->app->singleton(CoffeeService::class, CoffeeService::class);
+        $this->app->singleton(RatingService::class, RatingService::class);
 
         $this->app->when(RecipeController::class)
             ->needs(BaseServiceInterface::class)
@@ -35,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
             ->needs(BaseServiceInterface::class)
             ->give(RatingService::class);
 
+        $this->app->when(DashboardController::class)
+            ->needs(BaseServiceInterface::class)
+            ->give(RecipeService::class);
     }
 
     /**

@@ -60,14 +60,17 @@ class RecipeController extends Controller
         return redirect()->route('recipes.index')->with('success', 'Resep seduh berhasil disimpan!');
     }
 
-    public function show(Recipe $recipe): Response
-    {
-        $recipe->load(['recipeSteps', 'brewer', 'coffee']);
+public function show(Recipe $recipe): Response
+{
+    $recipe->load(['recipeSteps', 'brewer', 'coffee', 'ratings.user']);
 
-        return Inertia::render('Recipe/Show', [
-            'recipe' => $recipe
-        ]);
-    }
+    $userRating = $recipe->ratings->firstWhere('user_id', Auth::id());
+
+    return Inertia::render('Recipe/Show', [
+        'recipe' => $recipe,
+        'userRating' => $userRating,
+    ]);
+}
 
 
     public function edit(Recipe $recipe): Response

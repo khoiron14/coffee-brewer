@@ -21,21 +21,21 @@ class RatingRepository extends BaseRepository
         'created_at'
     ];
 
-    public function getList(array $request = [], bool $paginated = true): Collection|LengthAwarePaginator
-    {
-        $request['per_page'] = $request['per_page'] ?? 10;
-        $request['recipe_id'] = $request['recipe_id'] ?? null;
-        $request['user_id'] = $request['user_id'] ?? null;
+    // public function getList(array $request = [], bool $paginated = true): Collection|LengthAwarePaginator
+    // {
+    //     $request['per_page'] = $request['per_page'] ?? 10;
+    //     $request['recipe_id'] = $request['recipe_id'] ?? null;
+    //     $request['user_id'] = $request['user_id'] ?? null;
 
-        $query = $this->getModel()
-            ->query()
-            ->with(['user:id,name', 'recipe:id,name'])
-            ->when(!is_null($request['recipe_id']), fn($q) => $q->where('recipe_id', $request['recipe_id']))
-            ->when(!is_null($request['user_id']), fn($q) => $q->where('user_id', $request['user_id']))
-            ->latest();
+    //     $query = $this->getModel()
+    //         ->query()
+    //         ->with(['user:id,name', 'recipe:id,name'])
+    //         ->when(!is_null($request['recipe_id']), fn($q) => $q->where('recipe_id', $request['recipe_id']))
+    //         ->when(!is_null($request['user_id']), fn($q) => $q->where('user_id', $request['user_id']))
+    //         ->latest();
 
-        return $paginated
-            ? $query->paginate($request['per_page'])
-            : $query->latest()->get();
-    }
+    //     return $paginated
+    //         ? $query->paginate($request['per_page'])
+    //         : $query->latest()->get();
+    // }
 }

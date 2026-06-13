@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\BaseServiceInterface;
+use App\Models\Rating;
 use App\Repositories\RatingRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,7 +24,18 @@ class RatingService implements BaseServiceInterface
 
     public function store(array $data, ?Model $existingModel = null): Model|Exception
     {
-        throw new Exception('Not implemented');
+        DB::beginTransaction();
+        try {
+            $rating = $existingModel ?? new Rating();
+            $rating->fill($data);
+            $rating->save();
+
+            DB::commit();
+            return $rating;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
     }
 
     public function delete(Model $model): bool|Exception

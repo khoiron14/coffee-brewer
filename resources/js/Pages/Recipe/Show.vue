@@ -30,16 +30,26 @@ const copyRecipeText = async () => {
 </script>
 
 <template>
-
     <Head :title="recipe.name" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">Detail Resep: {{ recipe.name }}</h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">Detail Resep: {{ recipe.name }}</h2>
+                
+                <Link 
+                    v-if="$page.props.auth.user.id === recipe.user_id"
+                    :href="route('recipes.edit', recipe.id)" 
+                    class="px-4 py-2 text-sm font-medium text-white transition bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                >
+                    Edit Resep
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
             <div class="max-w-4xl mx-auto space-y-6 sm:px-6 lg:px-8">
+                
                 <div class="p-6 bg-white rounded-lg shadow">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -78,8 +88,7 @@ const copyRecipeText = async () => {
                     <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
                         <div>
                             <h3 class="text-lg font-medium text-gray-900">Bagikan Resep</h3>
-                            <p class="text-sm text-gray-500">Simpan sebagai gambar story atau salin teks untuk
-                                dibagikan.</p>
+                            <p class="text-sm text-gray-500">Simpan sebagai gambar story atau salin teks untuk dibagikan.</p>
                         </div>
 
                         <div class="flex items-center gap-3">
@@ -142,9 +151,8 @@ const copyRecipeText = async () => {
                     <p v-else class="text-sm text-gray-500">Belum ada rating untuk resep ini.</p>
                 </div>
 
-                <div class="flex justify-end">
-                    <Link :href="route('recipes.index')" class="text-gray-600 hover:text-gray-900">Kembali ke Daftar
-                    </Link>
+                <div class="flex items-center justify-end gap-3 pt-2">
+
                 </div>
             </div>
         </div>

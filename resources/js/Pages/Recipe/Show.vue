@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
     recipe: any;
     userRating: any;
-
 }>();
 
 
@@ -19,7 +19,25 @@ const submit = (): void => {
     form.post(route('ratings.store'), {
         preserveScroll: true,
         onSuccess: () => form.reset(),
-    });
+    });}
+const copyStatus = ref('');
+
+const copyRecipeText = async () => {
+    try {
+        const response = await fetch(route('recipes.export', { recipe: props.recipe.id, type: 'text' }));
+        const data = await response.json();
+
+        if (data.success) {
+            await navigator.clipboard.writeText(data.text_to_copy);
+
+            copyStatus.value = 'Berhasil disalin!';
+            setTimeout(() => copyStatus.value = '', 3000);
+        }
+    } catch (error) {
+        console.error('Gagal menyalin teks:', error);
+        copyStatus.value = 'Gagal disalin!';
+        setTimeout(() => copyStatus.value = '', 3000);
+    }
 };
 </script>
 
@@ -28,11 +46,22 @@ const submit = (): void => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">Detail Resep: {{ recipe.name }}</h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">Detail Resep: {{ recipe.name }}</h2>
+
+                <Link
+                    v-if="$page.props.auth.user.id === recipe.user_id"
+                    :href="route('recipes.edit', recipe.id)"
+                    class="px-4 py-2 text-sm font-medium text-white transition bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                >
+                    Edit Resep
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
             <div class="max-w-4xl mx-auto space-y-6 sm:px-6 lg:px-8">
+
                 <div class="p-6 bg-white rounded-lg shadow">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -57,10 +86,37 @@ const submit = (): void => {
                 <div class="p-6 bg-white rounded-lg shadow">
                     <h3 class="mb-4 text-lg font-medium">Langkah Seduh</h3>
                     <div class="space-y-3">
-                        <div v-for="step in recipe.recipe_steps" :key="step.id" class="py-2 pl-4 border-l-4 border-indigo-500 bg-gray-50">
+                        <div v-for="step in recipe.recipe_steps" :key="step.id"
+                            class="py-2 pl-4 border-l-4 border-indigo-500 bg-gray-50">
                             <p class="text-sm font-semibold">Langkah {{ step.order }}: {{ step.pour_type }}</p>
-                            <p class="text-sm text-gray-600">{{ step.pour_volume }}ml selama {{ step.duration }} detik</p>
+                            <p class="text-sm text-gray-600">{{ step.pour_volume }}ml selama {{ step.duration }} detik
+                            </p>
                             <p v-if="step.note" class="text-xs italic text-gray-400">Catatan: {{ step.note }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-lg shadow">
+                    <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">Bagikan Resep</h3>
+                            <p class="text-sm text-gray-500">Simpan sebagai gambar story atau salin teks untuk dibagikan.</p>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <span v-if="copyStatus" class="text-sm font-medium text-green-600 transition-opacity">
+                                {{ copyStatus }}
+                            </span>
+
+                            <button @click="copyRecipeText"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                📋 Salin Teks
+                            </button>
+
+                            <a :href="route('recipes.export', { recipe: recipe.id, type: 'image' })"
+                                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                📸 Unduh Gambar
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -171,9 +227,6 @@ const submit = (): void => {
     <p v-else class="py-4 text-sm text-center text-gray-400">Belum ada rating untuk resep ini.</p>
 </div>
 
-                <div class="flex justify-end">
-                    <Link :href="route('recipes.index')" class="text-gray-600 hover:text-gray-900">Kembali ke Daftar</Link>
-                </div>
             </div>
         </div>
     </AuthenticatedLayout>

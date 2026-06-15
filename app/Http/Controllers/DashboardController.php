@@ -20,12 +20,13 @@ class DashboardController extends Controller
             'is_published' => true,
             'per_page' => 6,
         ]);
-
+        $publicRecipes->getCollection()->load('ratings', 'user', 'brewer', 'coffee');
 
         $ownRecipes = $this->recipeService->getList([
             'user_id' => Auth::id(),
             'per_page' => 6,
         ]);
+        $ownRecipes->getCollection()->load('ratings', 'brewer', 'coffee');
 
         return Inertia::render('Dashboard', [
             'publicRecipes' => $publicRecipes,

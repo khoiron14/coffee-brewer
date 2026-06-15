@@ -102,7 +102,7 @@ const draftOwnRecipes = computed(() =>
                             Draft <strong>{{ draftOwnRecipes.length }}</strong>
                         </span>
                     </div>                        <Link :href="route('recipes.index')" class="text-sm text-indigo-600 hover:text-indigo-900">
-                            List Semua
+                        Lihat Semua
                         </Link>
                     </div>
 

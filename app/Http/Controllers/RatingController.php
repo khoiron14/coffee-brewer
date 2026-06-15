@@ -19,13 +19,6 @@ class RatingController extends Controller
         private BaseServiceInterface $ratingService
     ) {}
 
-    public function create(Recipe $recipe): Response
-    {
-        return Inertia::render('Rating/Create', [
-            'recipe' => $recipe->only('id', 'name'),
-        ]);
-    }
-
     public function store(RatingRequest $request): RedirectResponse
     {
         $validated = $request->validated();

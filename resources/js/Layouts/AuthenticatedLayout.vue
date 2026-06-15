@@ -44,7 +44,7 @@ const navigation = [
     current: route().current('coffees.*'),
   },
   {
-    name: 'Resep Saya',t
+    name: 'Resep Saya',
     href: route('recipes.index'),
     icon: ClipboardDocumentListIcon,
     current: route().current('recipes.*') || route().current('ratings.*'),

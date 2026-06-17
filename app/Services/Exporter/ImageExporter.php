@@ -25,8 +25,6 @@ class ImageExporter implements ExporterInterface
     {
         $manager = new ImageManager(new Driver());
         
-        // Eager load steps to optimize query and compute heights
-        $recipe->load('recipeSteps');
         $steps = $recipe->recipeSteps ?? [];
         $fontPath = public_path('fonts/poppins.ttf');
 

@@ -22,7 +22,6 @@ class TextExporter implements ExporterInterface
         
         $text .= "*Langkah Seduh:*\n";
 
-        $recipe->load('recipeSteps');
         $stepNumber = 1;
 
         foreach ($recipe->recipeSteps ?? [] as $step) {
